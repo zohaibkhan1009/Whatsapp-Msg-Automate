@@ -1,0 +1,42 @@
+import pywhatkit as kit
+from datetime import datetime
+
+# 1. Define the recipient's WhatsApp number and the message
+def schedule_whatsapp_message(phone_number, message, send_date, send_time):
+    """
+    Schedules a WhatsApp message to be sent at the specified date and time.
+    Arguments:
+    - phone_number: WhatsApp number of the recipient in the format '+[CountryCode][PhoneNumber]'
+    - message: The message content you want to send
+    - send_date: Date to send the message in 'dd.mm.yyyy' format
+    - send_time: Time to send the message in 'HH:MM' (24-hour format)
+    """
+    
+    # 2. Extract the hour and minute from send_time
+    send_hour, send_minute = map(int, send_time.split(":"))
+    
+    # 3. Extract the day, month, and year from send_date
+    day, month, year = map(int, send_date.split("."))
+    
+    # 4. Get the current date and time
+    now = datetime.now()
+    
+    # 5. Validate if the scheduled time is in the future
+    if datetime(year, month, day, send_hour, send_minute) <= now:
+        print("The scheduled time must be in the future.")
+        return
+    
+    # 6. Schedule the message using `sendwhatmsg` method
+    kit.sendwhatmsg(phone_number, message, send_hour, send_minute)
+    print(f"Message scheduled to {phone_number} at {send_time} on {send_date}")
+
+# Example usage
+phone_number = "+919999999999"  # Recipient's WhatsApp number with country code
+message = "Happy Birthday! 🎉 Hope you have an amazing day!"  # Message content
+send_date = "03.11.2024"  # Date to send the message
+send_time = "16:37"       # Time to send the message in 24-hour format
+
+# Schedule the message
+schedule_whatsapp_message(phone_number, message, send_date, send_time)
+
+#just need to change the number and make sure the browser is open with internet on.
